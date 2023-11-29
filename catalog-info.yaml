@@ -1,0 +1,66 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: angelsfairy-poi-backend-app-dev
+  annotations:
+    argocd/app-name: angelsfairy-poi-backend-app-dev
+    backstage.io/kubernetes-id: angelsfairy-poi-backend-app
+    backstage.io/kubernetes-namespace: angelsfairy
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rhdh23-demo/angelsfairy-backend
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.rosa-pzz6v.9nln.p1.openshiftapps.com/dev-pipelines/ns/angelsfairy/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.rosa-pzz6v.9nln.p1.openshiftapps.com/k8s/ns/angelsfairy/deployments/angelsfairy-poi-backend-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.rosa-pzz6v.9nln.p1.openshiftapps.com/#https://github.com/rhdh23-demo/angelsfairy-backend?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/angelsfairy"
+  system: workshop-system-angelsfairy
+  providesApis:
+    - backend-api-angelsfairy
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-angelsfairy
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/angelsfairy"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: backend-api-angelsfairy
+  description: API surface used by workshop attendees to initialize and load parks data
+  links:
+    - url: http://angelsfairy-poi-backend-app-angelsfairy.apps.rosa-pzz6v.9nln.p1.openshiftapps.com/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/rhdh23-demo/angelsfairy-backend/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/angelsfairy"
+  system: workshop-system-angelsfairy
+  definition:
+    $text: https://github.com/rhdh23-demo/angelsfairy-backend/tree/main/src/main/resources/META-INF/openapi.yaml
